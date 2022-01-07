@@ -11,7 +11,8 @@ public class App extends Application {
     private final static int WINDOW_HEIGHT = 600;
 
     private final static double r = 20; // the inner radius from hexagon center to outer corner
-    private final static double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the axis
+    private final static double n = Math.sqrt(r * r * 0.75); // the inner radius from hexagon center to middle of the
+                                                             // axis
     private final static double TILE_HEIGHT = 2 * r;
     private final static double TILE_WIDTH = 2 * n;
 
@@ -42,6 +43,10 @@ public class App extends Application {
     }
 
     private class Tile extends Polygon {
+
+        private double x;
+        private double y;
+
         Tile(double x, double y) {
             // creates the polygon using the corner coordinates
             getPoints().addAll(
@@ -50,14 +55,30 @@ public class App extends Application {
                     x + n, y + r * 1.5,
                     x + TILE_WIDTH, y + r,
                     x + TILE_WIDTH, y,
-                    x + n, y - r * 0.5
-            );
+                    x + n, y - r * 0.5);
+
+            this.x = x;
+            this.y = y;
 
             // set up the visuals and a click listener for the tile
             setFill(Color.ANTIQUEWHITE);
             setStrokeWidth(1);
             setStroke(Color.BLACK);
             setOnMouseClicked(e -> System.out.println("Clicked: " + this));
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        @Override
+        public String toString() {
+            // TODO Auto-generated method stub
+            return "(" + getX() + ", " + getY() + ")";
         }
     }
 }
