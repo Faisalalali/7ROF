@@ -1,8 +1,11 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -13,8 +16,6 @@ public class App extends Application {
     private final static double n = 50; // the inner radius from hexagon center to outer corner
     private final static double r = Math.sqrt(n * n * 0.75); // the inner radius from hexagon center to middle of the
                                                              // axis
-    private final static double TILE_HEIGHT = 2 * r;
-    private final static double TILE_WIDTH = 2 * n;
 
     public static void main(String[] args) {
         launch(args);
@@ -22,38 +23,26 @@ public class App extends Application {
 
     public void start(Stage primaryStage) {
         AnchorPane tileMap = new AnchorPane();
+        tileMap.setBackground(Background.EMPTY);
         Scene content = new Scene(tileMap, WINDOW_WIDTH, WINDOW_HEIGHT);
+        content.setFill(Color.TRANSPARENT);
         primaryStage.setScene(content);
+        // primaryStage.initStyle(StageStyle.UNDECORATED);
+        // primaryStage.initStyle(StageStyle.TRANSPARENT);
+        // primaryStage.setOpacity(1);
+        // primaryStage.initStyle(StageStyle.TRANSPARENT);
+        // primaryStage.setAlwaysOnTop(true);
 
-        int rowCount = 4; // how many rows of tiles should be created
-        int columnCount = 4; // how many columns of tiles should be created
-        int tilesPerRow = 6; // the amount of tiles that are contained in each row
-        int tilesPerColumn = 6; // the amount of tiles that are contained in each column
-        int xStartOffset = 40; // offsets the entire field to the right
-        int yStartOffset = 40; // offsets the entire fields downwards
-
-        // Vertical alignment grid
-        // for (int x = 0; x < tilesPerRow; x++) {
-        // for (int y = 0; y < rowCount; y++) {
-        // double xCoord = x * TILE_WIDTH + (y % 2) * n + xStartOffset;
-        // double yCoord = y * TILE_HEIGHT * 0.75 + yStartOffset;
-
-        // Polygon tile = new VerticalTile(xCoord, yCoord);
-        // tileMap.getChildren().add(tile);
-        // }
-        // }
-
+        // Grid contents
+        String[] contentList = { "أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش",
+                "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "هـ", "و", "ي",
+                "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+        java.util.Random random = new java.util.Random();
         // Horizontal alignment grid
-        for (int y = 0; y < tilesPerColumn; y++) {
-            for (int x = 0; x < rowCount; x++) {
-                double yCoord = y * TILE_HEIGHT + (x % 2) * r + yStartOffset;
-                double xCoord = x * TILE_WIDTH * 0.75 + xStartOffset;
-
-                Polygon tile = new HorizontalTile(xCoord, yCoord);
-                tileMap.getChildren().add(tile);
-            }
-        }
+        HorizontalHexagonGrid board = new HorizontalHexagonGrid(50, 5, 5);
+        tileMap.getChildren().add(board);
         primaryStage.show();
+
     }
 
     // https://www.desmos.com/calculator/rn1ilpugiv
@@ -68,8 +57,8 @@ public class App extends Application {
                     x, y,
                     x, y + r,
                     x + n, y + r * 1.5,
-                    x + TILE_WIDTH, y + r,
-                    x + TILE_WIDTH, y,
+                    x + 2 * n, y + r,
+                    x + 2 * n, y,
                     x + n, y - r * 0.5);
 
             this.x = x;
@@ -101,8 +90,9 @@ public class App extends Application {
 
         private double x;
         private double y;
+        private double[] center;
 
-        HorizontalTile(double x, double y) {
+        HorizontalTile(double x, double y, double n, double r) {
             // creates the polygon using the corner coordinates
             getPoints().addAll(
                     x, y,
@@ -114,9 +104,10 @@ public class App extends Application {
 
             this.x = x;
             this.y = y;
-
+            this.center = new double[] { x + .5 * n, y + r };
             // set up the visuals and a click listener for the tile
             setFill(Color.ANTIQUEWHITE);
+
             setStrokeWidth(1);
             setStroke(Color.BLACK);
             setOnMouseClicked(e -> System.out.println("Clicked: " + this));
@@ -130,9 +121,61 @@ public class App extends Application {
             return y;
         }
 
+        public double[] getCenter() {
+            return center;
+        }
+
         @Override
         public String toString() {
-            return "(" + getX() + ", " + getY() + ")";
+            return "(" + center[0] + ", " + center[1] + ")";
+        }
+    }
+
+    private class TextHorizontalTile extends StackPane {
+        private HorizontalTile tile;
+        private Text text;
+
+        TextHorizontalTile(double x, double y, String content) {
+            this.text = new Text(x, y, content);
+            tile = new HorizontalTile(x, y, n, r);
+            getChildren().addAll(tile, this.text);
+            setOnMouseClicked(e -> System.out.println("Clicked: " + this));
+
+        }
+
+    }
+
+    private class HorizontalHexagonGrid extends AnchorPane {
+        private double r, // the inner radius from hexagon center to middle of the axis
+                n; // the inner radius from hexagon center to outer corner
+        private int columnCount, // how many columns of tiles should be created
+                tilesPerColumn; // the amount of tiles that are contained in each column
+
+        double xStartOffset = 0; // offsets the entire field to the right
+        double yStartOffset = 0; // offsets the entire fields downwards
+
+        HorizontalTile[] grid;
+
+        HorizontalHexagonGrid(double scale, int columnCount, int tilesPerColumn) {
+            this.n = scale;
+            this.r = Math.sqrt(scale * scale * 0.75);
+            this.columnCount = columnCount;
+            this.tilesPerColumn = tilesPerColumn;
+            this.xStartOffset = .5 * n;
+
+            // Horizontal alignment grid
+            grid = new HorizontalTile[columnCount * tilesPerColumn];
+            for (int y = 0; y < tilesPerColumn; y++) {
+                for (int x = 0; x < columnCount; x++) {
+                    double yCoord = y * 2 * r + (x % 2) * r + yStartOffset;
+                    double xCoord = x * 2 * n * 0.75 + xStartOffset;
+
+                    HorizontalTile tile = new HorizontalTile(xCoord, yCoord, n, r);
+                    grid[y * columnCount + x] = tile;
+                    getChildren().add(tile);
+                    setStyle("-fx-background-color: #fA15A1");
+                }
+            }
         }
     }
 }
