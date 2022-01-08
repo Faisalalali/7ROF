@@ -182,8 +182,8 @@ public class App extends Application {
                     setStyle("-fx-background-color: #fA15A1");
                 }
             }
-            // Why the hell won't the text show
-            
+            // Why the hell won't the text show.
+
             // for (int i = 0; i < grid.length; i++) {
             //     double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
             //     textGrid[i] = new Text(x, y, "t");
