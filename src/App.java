@@ -139,7 +139,8 @@ public class App extends Application {
             this.text = new Text(x, y, content);
             tile = new HorizontalTile(x, y, n, r);
             getChildren().addAll(tile, this.text);
-            setOnMouseClicked(e -> System.out.println("Clicked: " + this));
+            // setOnMouseClicked(e -> System.out.println("Clicked: " + this)); // causes
+            // inaccurate clicks
 
         }
 
@@ -155,6 +156,8 @@ public class App extends Application {
         double yStartOffset = 0; // offsets the entire fields downwards
 
         HorizontalTile[] grid;
+        Text[] textGrid;
+        StackPane[] stackGrid;
 
         HorizontalHexagonGrid(double scale, int columnCount, int tilesPerColumn) {
             this.n = scale;
@@ -165,6 +168,9 @@ public class App extends Application {
 
             // Horizontal alignment grid
             grid = new HorizontalTile[columnCount * tilesPerColumn];
+            textGrid = new Text[columnCount * tilesPerColumn];
+            stackGrid = new StackPane[columnCount * tilesPerColumn];
+
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
                     double yCoord = y * 2 * r + (x % 2) * r + yStartOffset;
@@ -176,6 +182,16 @@ public class App extends Application {
                     setStyle("-fx-background-color: #fA15A1");
                 }
             }
+            // Why the hell won't the text show
+            
+            // for (int i = 0; i < grid.length; i++) {
+            //     double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
+            //     textGrid[i] = new Text(x, y, "t");
+            //     textGrid[i].toFront();
+            //     textGrid[i].setStyle("-fx-background-color: #fA15A1");
+            //     stackGrid[i] = new StackPane();
+            //     stackGrid[i].getChildren().addAll(grid[i], textGrid[i]);
+            // }
         }
     }
 }
