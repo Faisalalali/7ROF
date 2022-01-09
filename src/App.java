@@ -1,11 +1,19 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -33,11 +41,6 @@ public class App extends Application {
         // primaryStage.initStyle(StageStyle.TRANSPARENT);
         // primaryStage.setAlwaysOnTop(true);
 
-        // Grid contents
-        String[] contentList = { "أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش",
-                "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "هـ", "و", "ي",
-                "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-        java.util.Random random = new java.util.Random();
         // Horizontal alignment grid
         HorizontalHexagonGrid board = new HorizontalHexagonGrid(50, 5, 5);
         tileMap.getChildren().add(board);
@@ -93,18 +96,25 @@ public class App extends Application {
         private double[] center;
 
         HorizontalTile(double x, double y, double n, double r) {
+            super(x, y, n, r, 0);
+        }
+
+        HorizontalTile(double x, double y, double n, double r, double ExtraX) {
             // creates the polygon using the corner coordinates
             getPoints().addAll(
                     x, y,
-                    x + n, y,
-                    x + n * 1.5, y + r,
-                    x + n, y + 2 * r,
+                    x + n + n * 1.5 * (ExtraX - 1), y,
+                    x + n * 1.5 * ExtraX, y + r,
+                    x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
                     x, y + 2 * r,
                     x - n * 0.5, y + r);
 
             this.x = x;
             this.y = y;
-            this.center = new double[] { x + .5 * n, y + r };
+
+            double xAverage = x + (n + n * 1.5 * (ExtraX - 1)) / 2;
+            double yAverage = y + r;
+            this.center = new double[] { xAverage, yAverage };
             // set up the visuals and a click listener for the tile
             setFill(Color.ANTIQUEWHITE);
 
@@ -127,7 +137,7 @@ public class App extends Application {
 
         @Override
         public String toString() {
-            return "(" + center[0] + ", " + center[1] + ")";
+            return "(" + (int) (getX() / 2 / n / .75) + ", " + getY() + ")";
         }
     }
 
@@ -165,6 +175,7 @@ public class App extends Application {
             this.columnCount = columnCount;
             this.tilesPerColumn = tilesPerColumn;
             this.xStartOffset = .5 * n;
+            double extraWidth = 1.2;
 
             // Horizontal alignment grid
             grid = new HorizontalTile[columnCount * tilesPerColumn];
@@ -174,24 +185,33 @@ public class App extends Application {
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
                     double yCoord = y * 2 * r + (x % 2) * r + yStartOffset;
-                    double xCoord = x * 2 * n * 0.75 + xStartOffset;
+                    double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset;
 
-                    HorizontalTile tile = new HorizontalTile(xCoord, yCoord, n, r);
-                    grid[y * columnCount + x] = tile;
-                    getChildren().add(tile);
+                    grid[y * columnCount + x] = new HorizontalTile(xCoord, yCoord, n, r, extraWidth);
+                    getChildren().add(grid[y * columnCount + x]);
                     setStyle("-fx-background-color: #fA15A1");
                 }
             }
             // Why the hell won't the text show.
+            // Grid contents
+            java.util.Random random = new java.util.Random();
+            List<String> list = new ArrayList<>(Arrays.asList("أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز",
+                    "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "هـ", "و", "ي",
+                    "1", "2", "3", "4", "5", "6", "7", "8", "9"));
+            Collections.shuffle(list, random);
+            for (int i = 0; i < grid.length; i++) {
+                double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
+                textGrid[i] = new Text(list.get(i));
+                Font font = Font.loadFont("file:resources/Fonts/Reem_Kufi/static/ReemKufi-Medium.ttf", 52);
+                textGrid[i].setFont(font);
+                textGrid[i].setTextAlignment(TextAlignment.CENTER);
+                // textGrid[i]
+                textGrid[i].xProperty().set(x - textGrid[i].getBoundsInLocal().getWidth() * .5);
 
-            // for (int i = 0; i < grid.length; i++) {
-            //     double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
-            //     textGrid[i] = new Text(x, y, "t");
-            //     textGrid[i].toFront();
-            //     textGrid[i].setStyle("-fx-background-color: #fA15A1");
-            //     stackGrid[i] = new StackPane();
-            //     stackGrid[i].getChildren().addAll(grid[i], textGrid[i]);
-            // }
+                textGrid[i].yProperty().set(y + textGrid[i].getBoundsInLocal().getHeight() * .25);
+                getChildren().add(textGrid[i]);
+                // textGrid[i].toFront(); // no need due to insertion order
+            }
         }
     }
 }
