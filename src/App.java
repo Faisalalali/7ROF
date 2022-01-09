@@ -3,9 +3,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.crypto.dsig.SignatureProperty;
+
 import javafx.application.Application;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Slider;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Lighting;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
@@ -15,6 +21,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 
 public class App extends Application {
 
@@ -94,6 +102,11 @@ public class App extends Application {
         private double x;
         private double y;
         private double[] center;
+        private int state = 0;
+        private final int DEFAULT_COLOR = 0;
+        private final int SELECTED_COLOR = 1;
+        private final int GREEN_COLOR = 2;
+        private final int RED_COLOR = 3;
 
         HorizontalTile(double x, double y, double n, double r) {
             super(x, y, n, r, 0);
@@ -120,7 +133,27 @@ public class App extends Application {
 
             setStrokeWidth(1);
             setStroke(Color.BLACK);
-            setOnMouseClicked(e -> System.out.println("Clicked: " + this));
+            setOnMouseClicked(e -> setState((getState() + 1) % 4));
+
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
+
+        public int getState() {
+            return state;
+        }
+
+        private void updateState() {
+            if (state == DEFAULT_COLOR)
+                setFill(Color.ANTIQUEWHITE);
+            else if (state == SELECTED_COLOR)
+                setFill(Color.YELLOW);
+            else if (state == GREEN_COLOR)
+                setFill(Color.GREEN);
+            else if (state == RED_COLOR)
+                setFill(Color.RED);
         }
 
         public double getX() {
@@ -163,11 +196,12 @@ public class App extends Application {
                 tilesPerColumn; // the amount of tiles that are contained in each column
 
         double xStartOffset = 0; // offsets the entire field to the right
+        double xBoarderOffset = 0;
         double yStartOffset = 0; // offsets the entire fields downwards
+        double yBoarderOffset = 0;
 
         HorizontalTile[] grid;
         Text[] textGrid;
-        StackPane[] stackGrid;
 
         HorizontalHexagonGrid(double scale, int columnCount, int tilesPerColumn) {
             this.n = scale;
@@ -175,17 +209,18 @@ public class App extends Application {
             this.columnCount = columnCount;
             this.tilesPerColumn = tilesPerColumn;
             this.xStartOffset = .5 * n;
-            double extraWidth = 1.2;
+            double extraWidth = 1.4;
 
+            xBoarderOffset = n;
+            yBoarderOffset = r;
             // Horizontal alignment grid
             grid = new HorizontalTile[columnCount * tilesPerColumn];
             textGrid = new Text[columnCount * tilesPerColumn];
-            stackGrid = new StackPane[columnCount * tilesPerColumn];
 
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
-                    double yCoord = y * 2 * r + (x % 2) * r + yStartOffset;
-                    double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset;
+                    double yCoord = y * 2 * r + (x % 2) * r + yStartOffset + yBoarderOffset;
+                    double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
                     grid[y * columnCount + x] = new HorizontalTile(xCoord, yCoord, n, r, extraWidth);
                     getChildren().add(grid[y * columnCount + x]);
@@ -202,9 +237,24 @@ public class App extends Application {
             for (int i = 0; i < grid.length; i++) {
                 double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
                 textGrid[i] = new Text(list.get(i));
-                Font font = Font.loadFont("file:resources/Fonts/Reem_Kufi/static/ReemKufi-Medium.ttf", 52);
+                Font font = Font.loadFont("file:resources/Fonts/Reem_Kufi/static/ReemKufi-Bold.ttf", 52);
                 textGrid[i].setFont(font);
                 textGrid[i].setTextAlignment(TextAlignment.CENTER);
+                textGrid[i].setFill(Color.BLUE);
+                Lighting ds = new Lighting();
+
+                Light.Distant light = new Light.Distant();
+                light.setAzimuth(0);
+
+                Lighting lighting = new Lighting(light);
+                lighting.setSurfaceScale(5.0);
+                SimpleDoubleProperty azimuth = new SimpleDoubleProperty(0);
+
+                light.setAzimuth(azimuth.get());
+                lighting.setLight(light);
+                textGrid[i].setEffect(lighting);
+
+                textGrid[i].setEffect(ds);
                 // textGrid[i]
                 textGrid[i].xProperty().set(x - textGrid[i].getBoundsInLocal().getWidth() * .5);
 
