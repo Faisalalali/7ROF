@@ -133,7 +133,10 @@ public class App extends Application {
 
             setStrokeWidth(1);
             setStroke(Color.BLACK);
-            setOnMouseClicked(e -> setState((getState() + 1) % 4));
+            setOnMouseClicked(e -> {
+                setState((getState() + 1) % 4);
+                updateState();
+            });
 
         }
 
@@ -194,6 +197,8 @@ public class App extends Application {
                         x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
                         x, y + 2 * r,
                         x - n * 0.5, y + r);
+                setFill(Color.RED);
+
             } else if (orientation == 'l' || orientation == 'L') {
                 getPoints().addAll( // dunno how, but it works!
                         x + n * (ExtraX - 1) * 1.5, y,
@@ -202,6 +207,7 @@ public class App extends Application {
                         x + n * (ExtraX - 1) * 1.5 + n, y + 2 * r,
                         x + n * (ExtraX - 1) * 1.5, y + 2 * r,
                         x + n * (ExtraX - 1) * 1.5 + n * 0.5, y + r);
+                setFill(Color.RED);
             } else if (orientation == 't' || orientation == 'T' || orientation == 'u' || orientation == 'U') {
 
             } else if (orientation == 'b' || orientation == 'B' || orientation == 'd' || orientation == 'D') {
@@ -212,7 +218,7 @@ public class App extends Application {
             this.y = y;
 
             // set up the visuals and a click listener for the tile
-            setFill(Color.ANTIQUEWHITE);
+            //setFill(Color.ANTIQUEWHITE);
 
             setStrokeWidth(1);
             setStroke(Color.BLACK);
@@ -278,7 +284,7 @@ public class App extends Application {
                 getChildren().addAll(side[y]);
                 getChildren().addAll(side[y + 1]);
 
-                setStyle("-fx-background-color: #fA15A1");
+                setStyle("-fx-background-color: #21AEB9");
             }
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
@@ -287,7 +293,7 @@ public class App extends Application {
 
                     grid[y * columnCount + x] = new HorizontalTile(xCoord, yCoord, n, r, extraWidth);
                     getChildren().add(grid[y * columnCount + x]);
-                    setStyle("-fx-background-color: #fA15A1");
+                    setStyle("-fx-background-color: #FA15A1");
                 }
             }
             // Why the hell won't the text show.
