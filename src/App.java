@@ -178,33 +178,33 @@ public class App extends Application {
 
         private double x;
         private double y;
-        private char orintation;
+        private char orientation;
 
-        HorizontalBoarder(double x, double y, double n, double r, char orintation) {
-            super(x, y, n, r, orintation, 1);
+        HorizontalBoarder(double x, double y, double n, double r, char orientation) {
+            super(x, y, n, r, orientation, 1);
         }
 
-        HorizontalBoarder(double x, double y, double n, double r, char orintation, double ExtraX) {
+        HorizontalBoarder(double x, double y, double n, double r, char orientation, double ExtraX) {
             // creates the polygon using the corner coordinates
-            if (orintation == 'r' || orintation == 'R') {
+            if (orientation == 'r' || orientation == 'R') {
                 getPoints().addAll(
                         x, y,
                         x + n + n * 1.5 * (ExtraX - 1), y,
-                        x - n * 1.5 * ExtraX, y + r,
+                        x + n * .5 * ExtraX, y + r,
                         x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
                         x, y + 2 * r,
                         x - n * 0.5, y + r);
-            } else if (orintation == 'l' || orintation == 'L') {
-                getPoints().addAll(
-                        x, y,
-                        x + n + n * 1.5 * (ExtraX - 1), y,
-                        x + n * 1.5 * ExtraX, y + r,
-                        x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
-                        x, y + 2 * r,
-                        x + n * 0.5, y + r);
-            } else if (orintation == 't' || orintation == 'T' || orintation == 'u' || orintation == 'U') {
+            } else if (orientation == 'l' || orientation == 'L') {
+                getPoints().addAll( // dunno how, but it works!
+                        x + n * (ExtraX - 1) * 1.5, y,
+                        x + n * (ExtraX - 1) * 1.5 + n, y,
+                        x + n * (ExtraX - 1) * 1.5 + n * 1.5, y + r,
+                        x + n * (ExtraX - 1) * 1.5 + n, y + 2 * r,
+                        x + n * (ExtraX - 1) * 1.5, y + 2 * r,
+                        x + n * (ExtraX - 1) * 1.5 + n * 0.5, y + r);
+            } else if (orientation == 't' || orientation == 'T' || orientation == 'u' || orientation == 'U') {
 
-            } else if (orintation == 'b' || orintation == 'B' || orintation == 'd' || orintation == 'D') {
+            } else if (orientation == 'b' || orientation == 'B' || orientation == 'd' || orientation == 'D') {
 
             }
 
@@ -243,7 +243,7 @@ public class App extends Application {
 
         double xStartOffset = 0; // offsets the entire field to the right
         double xBoarderOffset = 0;
-        double yStartOffset = 0; // offsets the entire fields downwards
+        double yStartOffset = 10; // offsets the entire fields downwards
         double yBoarderOffset = 0;
 
         HorizontalBoarder[] side;
@@ -255,7 +255,7 @@ public class App extends Application {
             this.r = Math.sqrt(scale * scale * 0.75);
             this.columnCount = columnCount;
             this.tilesPerColumn = tilesPerColumn;
-            this.xStartOffset = .5 * n;
+            this.xStartOffset = n;
             double extraWidth = 1.4;
 
             this.xBoarderOffset = n;
@@ -266,17 +266,18 @@ public class App extends Application {
             side = new HorizontalBoarder[columnCount * 2];
             // topDown = new HorizontalBoarder[tilesPerColumn*2];
 
-            // TODO fix boarder adding (right-left for now)
-            for (int y = -1; y < tilesPerColumn + 1; y++) {
-                double yCoordLeft = y * 2 * r + yStartOffset + yBoarderOffset;
-                double xCoordLeft = xStartOffset + xBoarderOffset;
+            for (int y = 0; y < tilesPerColumn + 1; y++) {
+                double yCoordLeft = y * 2 * r + ((-1) % 2) * r + yStartOffset + yBoarderOffset;
+                double xCoordLeft = (-1) * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                double yCoordRight = y * 2 * r + (columnCount % 2) * r + yStartOffset + yBoarderOffset;
-                double xCoordRight = columnCount * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+                double yCoordRight = y * 2 * r + ((columnCount % 2) - 2) * r + yStartOffset + yBoarderOffset;
+                double xCoordRight = (columnCount) * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
                 side[y] = new HorizontalBoarder(xCoordLeft, yCoordLeft, n, r, 'l', extraWidth);
-                side[y + 1] = new HorizontalBoarder(xCoordRight, yCoordRight, n, r, 'r', extraWidth);
-                getChildren().addAll(side[y], side[y + 1]);
+                side[y + 1] = new HorizontalBoarder(xCoordRight, yCoordRight, n, r, 'r', 1);
+                getChildren().addAll(side[y]);
+                getChildren().addAll(side[y + 1]);
+
                 setStyle("-fx-background-color: #fA15A1");
             }
             for (int y = 0; y < tilesPerColumn; y++) {
