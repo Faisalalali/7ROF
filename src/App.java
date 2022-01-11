@@ -174,6 +174,52 @@ public class App extends Application {
         }
     }
 
+    private class HorizontalBoarder extends Polygon {
+
+        private double x;
+        private double y;
+        private char orintation;
+
+        HorizontalBoarder(double x, double y, double n, double r, char orintation) {
+            super(x, y, n, r, orintation, 1);
+        }
+
+        HorizontalBoarder(double x, double y, double n, double r, char orintation, double ExtraX) {
+            // creates the polygon using the corner coordinates
+            if (orintation == 'r' || orintation == 'R') {
+                getPoints().addAll(
+                        x, y,
+                        x + n + n * 1.5 * (ExtraX - 1), y,
+                        x - n * 1.5 * ExtraX, y + r,
+                        x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
+                        x, y + 2 * r,
+                        x - n * 0.5, y + r);
+            } else if (orintation == 'l' || orintation == 'L') {
+                getPoints().addAll(
+                        x, y,
+                        x + n + n * 1.5 * (ExtraX - 1), y,
+                        x + n * 1.5 * ExtraX, y + r,
+                        x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
+                        x, y + 2 * r,
+                        x + n * 0.5, y + r);
+            } else if (orintation == 't' || orintation == 'T' || orintation == 'u' || orintation == 'U') {
+
+            } else if (orintation == 'b' || orintation == 'B' || orintation == 'd' || orintation == 'D') {
+
+            }
+
+            this.x = x;
+            this.y = y;
+
+            // set up the visuals and a click listener for the tile
+            setFill(Color.ANTIQUEWHITE);
+
+            setStrokeWidth(1);
+            setStroke(Color.BLACK);
+        }
+
+    }
+
     private class TextHorizontalTile extends StackPane {
         private HorizontalTile tile;
         private Text text;
@@ -200,6 +246,7 @@ public class App extends Application {
         double yStartOffset = 0; // offsets the entire fields downwards
         double yBoarderOffset = 0;
 
+        HorizontalBoarder[] side;
         HorizontalTile[] grid;
         Text[] textGrid;
 
@@ -211,12 +258,27 @@ public class App extends Application {
             this.xStartOffset = .5 * n;
             double extraWidth = 1.4;
 
-            xBoarderOffset = n;
-            yBoarderOffset = r;
+            this.xBoarderOffset = n;
+            this.yBoarderOffset = r;
             // Horizontal alignment grid
             grid = new HorizontalTile[columnCount * tilesPerColumn];
             textGrid = new Text[columnCount * tilesPerColumn];
+            side = new HorizontalBoarder[columnCount * 2];
+            // topDown = new HorizontalBoarder[tilesPerColumn*2];
 
+            // TODO fix boarder adding (right-left for now)
+            for (int y = -1; y < tilesPerColumn + 1; y++) {
+                double yCoordLeft = y * 2 * r + yStartOffset + yBoarderOffset;
+                double xCoordLeft = xStartOffset + xBoarderOffset;
+
+                double yCoordRight = y * 2 * r + (columnCount % 2) * r + yStartOffset + yBoarderOffset;
+                double xCoordRight = columnCount * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+
+                side[y] = new HorizontalBoarder(xCoordLeft, yCoordLeft, n, r, 'l', extraWidth);
+                side[y + 1] = new HorizontalBoarder(xCoordRight, yCoordRight, n, r, 'r', extraWidth);
+                getChildren().addAll(side[y], side[y + 1]);
+                setStyle("-fx-background-color: #fA15A1");
+            }
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
                     double yCoord = y * 2 * r + (x % 2) * r + yStartOffset + yBoarderOffset;
