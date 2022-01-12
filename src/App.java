@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Lighting;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
@@ -103,10 +104,10 @@ public class App extends Application {
         private double y;
         private double[] center;
         private int state = 0;
-        private final int DEFAULT_COLOR = 0;
-        private final int SELECTED_COLOR = 1;
-        private final int GREEN_COLOR = 2;
-        private final int RED_COLOR = 3;
+        private final int DEFAULT_STATE = 0;
+        private final int SELECTED_STATE = 1;
+        private final int GREEN_STATE = 2;
+        private final int RED_STATE = 3;
 
         HorizontalTile(double x, double y, double n, double r) {
             super(x, y, n, r, 0);
@@ -134,28 +135,38 @@ public class App extends Application {
             setStrokeWidth(1);
             setStroke(Color.BLACK);
             setOnMouseClicked(e -> {
-                setState((getState() + 1) % 4);
-                updateState();
+                if (state == DEFAULT_STATE)
+                    setState(SELECTED_STATE);
+                else if (state == RED_STATE || state == GREEN_STATE)
+                    setState(DEFAULT_STATE);
+                else if (state == SELECTED_STATE)
+                    if (e.getButton().equals(MouseButton.SECONDARY))
+                        setState(RED_STATE);
+                    else if (e.getButton().equals(MouseButton.PRIMARY))
+                        setState(GREEN_STATE);
+                    else
+                        setState(DEFAULT_STATE);
             });
 
         }
 
         public void setState(int state) {
             this.state = state;
+            updateColor();
         }
 
         public int getState() {
             return state;
         }
 
-        private void updateState() {
-            if (state == DEFAULT_COLOR)
+        private void updateColor() {
+            if (state == DEFAULT_STATE)
                 setFill(Color.ANTIQUEWHITE);
-            else if (state == SELECTED_COLOR)
+            else if (state == SELECTED_STATE)
                 setFill(Color.YELLOW);
-            else if (state == GREEN_COLOR)
+            else if (state == GREEN_STATE)
                 setFill(Color.GREEN);
-            else if (state == RED_COLOR)
+            else if (state == RED_STATE)
                 setFill(Color.RED);
         }
 
@@ -218,7 +229,7 @@ public class App extends Application {
             this.y = y;
 
             // set up the visuals and a click listener for the tile
-            //setFill(Color.ANTIQUEWHITE);
+            // setFill(Color.ANTIQUEWHITE);
 
             setStrokeWidth(1);
             setStroke(Color.BLACK);
