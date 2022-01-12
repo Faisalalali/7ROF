@@ -57,6 +57,8 @@ public class App extends Application {
 
     }
 
+    // TODO: put the classes in difrent files, maybe?
+
     // https://www.desmos.com/calculator/rn1ilpugiv
     private class VerticalTile extends Polygon {
 
@@ -220,6 +222,10 @@ public class App extends Application {
                         x + n * (ExtraX - 1) * 1.5 + n * 0.5, y + r);
                 setFill(Color.RED);
             } else if (orientation == 't' || orientation == 'T' || orientation == 'u' || orientation == 'U') {
+                // TODO: custom shapes for top & bottom boarders
+                // top left (connected), top left (single, aka middle)
+                // top middle (odd), top middle (even)
+                // top right (odd), top left (even)
                 getPoints().addAll(
                         x, y,
                         x + n + n * 1.5 * (ExtraX - 1), y,
@@ -229,6 +235,7 @@ public class App extends Application {
                         x - n * 0.5, y + r);
                 setFill(Color.GREEN);
             } else if (orientation == 'b' || orientation == 'B' || orientation == 'd' || orientation == 'D') {
+                // TODO: same as prevoise but Bottom parts.
                 getPoints().addAll(
                         x, y,
                         x + n + n * 1.5 * (ExtraX - 1), y,
@@ -336,6 +343,7 @@ public class App extends Application {
             }
             // Why the hell won't the text show.
             // Grid contents
+            // TODO: Make text part of the polygon shape. (to fix click through)
             java.util.Random random = new java.util.Random();
             List<String> list = new ArrayList<>(Arrays.asList("أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز",
                     "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "هـ", "و", "ي",
@@ -366,6 +374,7 @@ public class App extends Application {
                 textGrid[i].xProperty().set(x - textGrid[i].getBoundsInLocal().getWidth() * .5);
 
                 textGrid[i].yProperty().set(y + textGrid[i].getBoundsInLocal().getHeight() * .25);
+                textGrid[i].setStyle("-rtfx-background-color:#FA15A1;-rtfx-border-stroke-color:black");
                 getChildren().add(textGrid[i]);
                 // textGrid[i].toFront(); // no need due to insertion order
             }
