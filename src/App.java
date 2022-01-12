@@ -28,7 +28,7 @@ import javafx.scene.effect.Lighting;
 public class App extends Application {
 
     private final static int WINDOW_WIDTH = 800;
-    private final static int WINDOW_HEIGHT = 600;
+    private final static int WINDOW_HEIGHT = 700;
 
     private final static double n = 50; // the inner radius from hexagon center to outer corner
     private final static double r = Math.sqrt(n * n * 0.75); // the inner radius from hexagon center to middle of the
@@ -220,9 +220,23 @@ public class App extends Application {
                         x + n * (ExtraX - 1) * 1.5 + n * 0.5, y + r);
                 setFill(Color.RED);
             } else if (orientation == 't' || orientation == 'T' || orientation == 'u' || orientation == 'U') {
-
+                getPoints().addAll(
+                        x, y,
+                        x + n + n * 1.5 * (ExtraX - 1), y,
+                        x + n * 1.5 * ExtraX, y + r,
+                        x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
+                        x, y + 2 * r,
+                        x - n * 0.5, y + r);
+                setFill(Color.GREEN);
             } else if (orientation == 'b' || orientation == 'B' || orientation == 'd' || orientation == 'D') {
-
+                getPoints().addAll(
+                        x, y,
+                        x + n + n * 1.5 * (ExtraX - 1), y,
+                        x + n * 1.5 * ExtraX, y + r,
+                        x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
+                        x, y + 2 * r,
+                        x - n * 0.5, y + r);
+                setFill(Color.GREEN);
             }
 
             this.x = x;
@@ -258,12 +272,13 @@ public class App extends Application {
         private int columnCount, // how many columns of tiles should be created
                 tilesPerColumn; // the amount of tiles that are contained in each column
 
-        double xStartOffset = 0; // offsets the entire field to the right
+        double xStartOffset = 50; // offsets the entire field to the right
         double xBoarderOffset = 0;
-        double yStartOffset = 10; // offsets the entire fields downwards
+        double yStartOffset = 50; // offsets the entire fields downwards
         double yBoarderOffset = 0;
 
         HorizontalBoarder[] side;
+        HorizontalBoarder[] topDown;
         HorizontalTile[] grid;
         Text[] textGrid;
 
@@ -272,7 +287,8 @@ public class App extends Application {
             this.r = Math.sqrt(scale * scale * 0.75);
             this.columnCount = columnCount;
             this.tilesPerColumn = tilesPerColumn;
-            this.xStartOffset = n;
+            if (xStartOffset < n)
+                this.xStartOffset = n;
             double extraWidth = 1.4;
 
             this.xBoarderOffset = n;
@@ -280,8 +296,8 @@ public class App extends Application {
             // Horizontal alignment grid
             grid = new HorizontalTile[columnCount * tilesPerColumn];
             textGrid = new Text[columnCount * tilesPerColumn];
-            side = new HorizontalBoarder[columnCount * 2];
-            // topDown = new HorizontalBoarder[tilesPerColumn*2];
+            side = new HorizontalBoarder[(columnCount + 1) * 2];
+            topDown = new HorizontalBoarder[tilesPerColumn * 2];
 
             for (int y = 0; y < tilesPerColumn + 1; y++) {
                 double yCoordLeft = y * 2 * r + ((-1) % 2) * r + yStartOffset + yBoarderOffset;
@@ -290,12 +306,23 @@ public class App extends Application {
                 double yCoordRight = y * 2 * r + ((columnCount % 2) - 2) * r + yStartOffset + yBoarderOffset;
                 double xCoordRight = (columnCount) * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                side[y] = new HorizontalBoarder(xCoordLeft, yCoordLeft, n, r, 'l', extraWidth);
-                side[y + 1] = new HorizontalBoarder(xCoordRight, yCoordRight, n, r, 'r', 1);
-                getChildren().addAll(side[y]);
-                getChildren().addAll(side[y + 1]);
+                side[y * 2] = new HorizontalBoarder(xCoordLeft, yCoordLeft, n, r, 'l', extraWidth);
+                side[y * 2 + 1] = new HorizontalBoarder(xCoordRight, yCoordRight, n, r, 'r', 1);
+                getChildren().add(side[y * 2]);
+                getChildren().add(side[y * 2 + 1]);
 
-                setStyle("-fx-background-color: #21AEB9");
+                // setStyle("-fx-background-color: #21AEB9");
+            }
+            for (int x = 0; x < columnCount; x++) {
+                double yCoordTop = (-1) * 2 * r + (x % 2) * r + yStartOffset + yBoarderOffset;
+                double xCoordTop = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+
+                double yCoordBot = tilesPerColumn * 2 * r + (x % 2) * r + yStartOffset + yBoarderOffset;
+                double xCoordBot = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+                topDown[x * 2] = new HorizontalBoarder(xCoordTop, yCoordTop, n, r, 't', extraWidth);
+                topDown[x * 2 + 1] = new HorizontalBoarder(xCoordBot, yCoordBot, n, r, 'd', extraWidth);
+                getChildren().add(topDown[x * 2]);
+                getChildren().add(topDown[x * 2 + 1]);
             }
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
