@@ -139,15 +139,20 @@ public class App extends Application {
             setOnMouseClicked(e -> {
                 if (state == DEFAULT_STATE)
                     setState(SELECTED_STATE);
-                else if (state == RED_STATE || state == GREEN_STATE)
+                else if (state == RED_STATE || state == GREEN_STATE) {
                     setState(DEFAULT_STATE);
-                else if (state == SELECTED_STATE)
-                    if (e.getButton().equals(MouseButton.SECONDARY))
+                    toBack();
+                } else if (state == SELECTED_STATE)
+                    if (e.getButton().equals(MouseButton.SECONDARY)) {
                         setState(RED_STATE);
-                    else if (e.getButton().equals(MouseButton.PRIMARY))
+                        toFront();
+                    } else if (e.getButton().equals(MouseButton.PRIMARY)) {
                         setState(GREEN_STATE);
-                    else
+                        toFront();
+                    } else {
                         setState(DEFAULT_STATE);
+                        toBack();
+                    }
             });
 
         }
@@ -227,7 +232,7 @@ public class App extends Application {
                 // top middle (odd), top middle (even)
                 // top right (odd), top left (even)
                 getPoints().addAll(
-                        x, y,
+                        x + n * 0.5 + n * 1.5 * (ExtraX - 1), y + r,
                         x + n + n * 1.5 * (ExtraX - 1), y,
                         x + n * 1.5 * ExtraX, y + r,
                         x + n + n * 1.5 * (ExtraX - 1), y + 2 * r,
@@ -307,10 +312,10 @@ public class App extends Application {
             topDown = new HorizontalBoarder[tilesPerColumn * 2];
 
             for (int y = 0; y < tilesPerColumn + 1; y++) {
-                double yCoordLeft = y * 2 * r + ((-1) % 2) * r + yStartOffset + yBoarderOffset;
+                double yCoordLeft = y * 2 * r + ((0) % 2) * r + yStartOffset + yBoarderOffset;
                 double xCoordLeft = (-1) * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                double yCoordRight = y * 2 * r + ((columnCount % 2) - 2) * r + yStartOffset + yBoarderOffset;
+                double yCoordRight = y * 2 * r + ((columnCount % 2) - 1) * r + yStartOffset + yBoarderOffset;
                 double xCoordRight = (columnCount) * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
                 side[y * 2] = new HorizontalBoarder(xCoordLeft, yCoordLeft, n, r, 'l', extraWidth);
@@ -321,10 +326,10 @@ public class App extends Application {
                 // setStyle("-fx-background-color: #21AEB9");
             }
             for (int x = 0; x < columnCount; x++) {
-                double yCoordTop = (-1) * 2 * r + (x % 2) * r + yStartOffset + yBoarderOffset;
+                double yCoordTop = (-1) * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
                 double xCoordTop = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                double yCoordBot = tilesPerColumn * 2 * r + (x % 2) * r + yStartOffset + yBoarderOffset;
+                double yCoordBot = tilesPerColumn * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
                 double xCoordBot = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
                 topDown[x * 2] = new HorizontalBoarder(xCoordTop, yCoordTop, n, r, 't', extraWidth);
                 topDown[x * 2 + 1] = new HorizontalBoarder(xCoordBot, yCoordBot, n, r, 'd', extraWidth);
@@ -333,7 +338,7 @@ public class App extends Application {
             }
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
-                    double yCoord = y * 2 * r + (x % 2) * r + yStartOffset + yBoarderOffset;
+                    double yCoord = y * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
                     double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
                     grid[y * columnCount + x] = new HorizontalTile(xCoord, yCoord, n, r, extraWidth);
