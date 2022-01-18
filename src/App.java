@@ -291,7 +291,7 @@ public class App extends Application {
 
         HorizontalBoarder[] side;
         HorizontalBoarder[] topDown;
-        HorizontalTile[] grid;
+        HexagonTile[] grid;
         Text[] textGrid;
 
         HorizontalHexagonGrid(double scale, int columnCount, int tilesPerColumn) {
@@ -306,7 +306,7 @@ public class App extends Application {
             this.xBoarderOffset = n;
             this.yBoarderOffset = r;
             // Horizontal alignment grid
-            grid = new HorizontalTile[columnCount * tilesPerColumn];
+            grid = new HexagonTile[columnCount * tilesPerColumn];
             textGrid = new Text[columnCount * tilesPerColumn];
             side = new HorizontalBoarder[(columnCount + 1) * 2];
             topDown = new HorizontalBoarder[tilesPerColumn * 2];
@@ -341,7 +341,7 @@ public class App extends Application {
                     double yCoord = y * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
                     double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                    grid[y * columnCount + x] = new HorizontalTile(xCoord, yCoord, n, r, extraWidth);
+                    grid[y * columnCount + x] = new HexagonTile(xCoord, yCoord, r, 'o');
                     getChildren().add(grid[y * columnCount + x]);
                     setStyle("-fx-background-color: #FA15A1");
                 }
@@ -355,7 +355,7 @@ public class App extends Application {
                     "1", "2", "3", "4", "5", "6", "7", "8", "9"));
             Collections.shuffle(list, random);
             for (int i = 0; i < grid.length; i++) {
-                double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
+                double x = 1,y=2;//grid[i].getCenter()[0], y = grid[i].getCenter()[1];
                 textGrid[i] = new Text(list.get(i));
                 Font font = Font.loadFont("file:resources/Fonts/Reem_Kufi/static/ReemKufi-Bold.ttf", 52);
                 textGrid[i].setFont(font);
