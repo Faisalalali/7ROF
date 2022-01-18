@@ -28,10 +28,10 @@ public class HexagonTile extends Polygon {
     private Color color;
 
     public HexagonTile(double xPosition, double yPosition, double circumRadius) {
-        this(xPosition, yPosition, circumRadius, 'o');
+        this(xPosition, yPosition, circumRadius, 'o', 0);
     }
 
-    public HexagonTile(double xPosition, double yPosition, double circumRadius, char shape) {
+    public HexagonTile(double xPosition, double yPosition, double circumRadius, char shape, double extendQ) {
         this.x = xPosition;
         this.y = yPosition;
         this.circumRadius = circumRadius;
@@ -87,5 +87,15 @@ public class HexagonTile extends Polygon {
 
         setStrokeWidth(1);
         setStroke(Color.BLACK);
+    }
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+    public double[] getCenter(){
+        return new double[]{x,y};
     }
 }

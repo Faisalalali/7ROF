@@ -301,7 +301,7 @@ public class App extends Application {
             this.tilesPerColumn = tilesPerColumn;
             if (xStartOffset < n)
                 this.xStartOffset = n;
-            double extraWidth = 1.4;
+            double extraWidth = 1;
 
             this.xBoarderOffset = n;
             this.yBoarderOffset = r;
@@ -341,7 +341,7 @@ public class App extends Application {
                     double yCoord = y * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
                     double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                    grid[y * columnCount + x] = new HexagonTile(xCoord, yCoord, r, 'o');
+                    grid[y * columnCount + x] = new HexagonTile(xCoord, yCoord, r, 'o', extraWidth);
                     getChildren().add(grid[y * columnCount + x]);
                     setStyle("-fx-background-color: #FA15A1");
                 }
@@ -355,7 +355,7 @@ public class App extends Application {
                     "1", "2", "3", "4", "5", "6", "7", "8", "9"));
             Collections.shuffle(list, random);
             for (int i = 0; i < grid.length; i++) {
-                double x = 1,y=2;//grid[i].getCenter()[0], y = grid[i].getCenter()[1];
+                double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
                 textGrid[i] = new Text(list.get(i));
                 Font font = Font.loadFont("file:resources/Fonts/Reem_Kufi/static/ReemKufi-Bold.ttf", 52);
                 textGrid[i].setFont(font);
