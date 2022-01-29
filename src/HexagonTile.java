@@ -37,9 +37,9 @@ public class HexagonTile extends Polygon {
         this.circumRadius = circumRadius;
         this.inRadius = Math.sqrt(circumRadius * circumRadius * .75);
         this.boarderDeform = shape;
-        double h1 = y + inRadius + inRadius * extendS + inRadius * extendR,
+        double h1 = y - inRadius - inRadius * extendS + inRadius * extendR,
                 h2 = y, // Generally y ± inRadius * extendS ∓ inRadius * extendR, but no need rn.
-                h3 = y - inRadius - inRadius * extendS + inRadius * extendR,
+                h3 = y + inRadius + inRadius * extendS + inRadius * extendR,
                 w1 = x - circumRadius - extendQ - .5 * circumRadius * extendS - .5 * circumRadius * extendR,
                 w2 = x - .5 * circumRadius - extendQ - .5 * extendS + .5 * circumRadius * extendR,
                 w3 = x - extendQ - .5 * extendS + .5 * circumRadius * extendR, // TODO apply scaling effect.
@@ -56,6 +56,7 @@ public class HexagonTile extends Polygon {
                         w5, h3,
                         w2, h3,
                         w1, h2);
+                setFill(Color.ANTIQUEWHITE);
                 break;
             case 'l':
                 getPoints().addAll(
@@ -65,6 +66,7 @@ public class HexagonTile extends Polygon {
                         w5, h3,
                         w4, h3,
                         w5, h2);
+                setFill(Color.RED);
                 break;
             case 'r':
                 getPoints().addAll(
@@ -74,12 +76,51 @@ public class HexagonTile extends Polygon {
                         w3, h3,
                         w2, h3,
                         w1, h2);
+                setFill(Color.RED);
+                break;
+            case 'w':
+                getPoints().addAll(
+                        w4, h2,
+                        w5, h1,
+                        w6, h2,
+                        w5, h3,
+                        w2, h3,
+                        w1, h2);
+                setFill(Color.GREEN);
+                break;
+            case 'x':
+                getPoints().addAll(
+                        w2, h1,
+                        w3, h2,
+                        w6, h2,
+                        w5, h3,
+                        w2, h3,
+                        w1, h2);
+                setFill(Color.GREEN);
+                break;
+            case 'y':
+                getPoints().addAll(
+                        w4, h2,
+                        w5, h3,
+                        w6, h2,
+                        w5, h1,
+                        w2, h1,
+                        w1, h2);
+                setFill(Color.GREEN);
+                break;
+            case 'z':
+                getPoints().addAll(
+                        w2, h3,
+                        w3, h2,
+                        w6, h2,
+                        w5, h1,
+                        w2, h1,
+                        w1, h2);
+                setFill(Color.GREEN);
                 break;
 
-            // wxyzcfmn are left
+            // cfmn are left
         }
-
-        setFill(Color.ANTIQUEWHITE);
 
         setStrokeWidth(1);
         setStroke(Color.BLACK);

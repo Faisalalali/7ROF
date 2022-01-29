@@ -46,10 +46,10 @@ public class Board extends AnchorPane {
                                 tiles[0][x] = new HexagonTile(xCoordTop, yCoordTop, circumRadius,
                                                 'w', extendQ);
                                 tiles[lastRow][x] = new HexagonTile(xCoordBot, yCoordBot, circumRadius,
-                                                'x', extendQ);
+                                                'y', extendQ);
                         } else if (x == lastRow - 1) {
                                 tiles[0][x] = new HexagonTile(xCoordTop, yCoordTop, circumRadius,
-                                                'y', extendQ);
+                                                'x', extendQ);
                                 tiles[lastRow][x] = new HexagonTile(xCoordBot, yCoordBot, circumRadius,
                                                 'z', extendQ);
                         } else {
