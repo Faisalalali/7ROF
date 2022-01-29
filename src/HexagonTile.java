@@ -37,57 +37,54 @@ public class HexagonTile extends Polygon {
         this.circumRadius = circumRadius;
         this.inRadius = Math.sqrt(circumRadius * circumRadius * .75);
         this.boarderDeform = shape;
+        double h1 = y + inRadius + inRadius * extendS + inRadius * extendR,
+                h2 = y, // Generally y ± inRadius * extendS ∓ inRadius * extendR, but no need rn.
+                h3 = y - inRadius - inRadius * extendS + inRadius * extendR,
+                w1 = x - circumRadius - extendQ - .5 * circumRadius * extendS - .5 * circumRadius * extendR,
+                w2 = x - .5 * circumRadius - extendQ - .5 * extendS + .5 * circumRadius * extendR,
+                w3 = x - extendQ - .5 * extendS + .5 * circumRadius * extendR, // TODO apply scaling effect.
+                w4 = x + extendQ - .5 * extendS + .5 * circumRadius * extendR, // TODO apply scaling effect.
+                w5 = x + .5 * circumRadius + extendQ - .5 * extendS + .5 * circumRadius * extendR,
+                w6 = x + circumRadius + extendQ - .5 * circumRadius * extendS + .5 * circumRadius * extendR;
 
-        if ("omnxrcyz".indexOf(shape) != -1) {
-            getPoints().addAll(x - .5 * circumRadius - extendQ - .5 * extendS + .5 * circumRadius * extendR,
-                    y + inRadius + inRadius * extendS + inRadius * extendR);// add vertex 1
+        switch (shape) {
+            case 'o': // getPoints().addAll(h1,w2,h1,w5,h2,w6,h3,w5,h3,w2,h2,w1);break;
+                getPoints().addAll(
+                        w2, h1,
+                        w5, h1,
+                        w6, h2,
+                        w5, h3,
+                        w2, h3,
+                        w1, h2);
+                break;
+            case 'l':
+                getPoints().addAll(
+                        w4, h1,
+                        w5, h1,
+                        w6, h2,
+                        w5, h3,
+                        w4, h3,
+                        w5, h2);
+                break;
+            case 'r':
+                getPoints().addAll(
+                        w2, h1,
+                        w3, h1,
+                        w2, h2,
+                        w3, h3,
+                        w2, h3,
+                        w1, h2);
+                break;
+
+            // wxyzcfmn are left
         }
-        if ("mxf".indexOf(shape) != -1) {
-            getPoints().addAll();// add vertex d
-        }
-        if ("mwf".indexOf(shape) != -1) {
-            getPoints().addAll();// add vetex e
-        }
-        if (shape == 'l') {
-            getPoints().addAll();// add vetex b
-        }
-        if (shape == 'r') {
-            getPoints().addAll();// add vertices acg
-        }
-        if ("omnwlcyz".indexOf(shape) != -1) {
-            getPoints().addAll(x + .5 * circumRadius + extendQ - .5 * extendS + .5 * circumRadius * extendR,
-                    y + inRadius + inRadius * extendS + inRadius * extendR);// add vertex 2
-        }
-        if ("omnxwlyz".indexOf(shape) != -1) {
-            getPoints().addAll(x + circumRadius + extendQ + .5 * circumRadius * extendS + .5 * circumRadius * extendR,
-                    y - inRadius * extendS + inRadius * extendR);// add vertex 3
-        }
-        if ("omnxwlfy".indexOf(shape) != -1) {
-            getPoints().addAll(x + .5 * circumRadius + extendQ + .5 * extendS - .5 * circumRadius * extendR,
-                    y - inRadius - inRadius * extendS - inRadius * extendR);// add vertex 4
-        }
-        if (shape == 'l') {
-            getPoints().addAll();// add vertices hf
-        }
-        if ("ncy".indexOf(shape) != -1) {
-            getPoints().addAll();// add vertex e
-        }
-        if ("ncz".indexOf(shape) != -1) {
-            getPoints().addAll();// add vertex d
-        }
-        if ("omnxwrfz".indexOf(shape) != -1) {
-            getPoints().addAll(x - .5 * circumRadius - extendQ + .5 * extendS - .5 * circumRadius * extendR,
-                    y - inRadius - inRadius * extendS - inRadius * extendR);// add vertex 5
-        }
-        if ("omnxwryz".indexOf(shape) != -1) {
-            getPoints().addAll(x - circumRadius - extendQ - .5 * circumRadius * extendS - .5 * circumRadius * extendR,
-                    y + inRadius * extendS - inRadius * extendR);// add vertex 6
-        }
+
         setFill(Color.ANTIQUEWHITE);
 
         setStrokeWidth(1);
         setStroke(Color.BLACK);
     }
+
     public double getX() {
         return x;
     }
@@ -95,7 +92,8 @@ public class HexagonTile extends Polygon {
     public double getY() {
         return y;
     }
-    public double[] getCenter(){
-        return new double[]{x,y};
+
+    public double[] getCenter() {
+        return new double[] { x, y };
     }
 }

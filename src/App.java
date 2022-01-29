@@ -326,10 +326,10 @@ public class App extends Application {
                 // setStyle("-fx-background-color: #21AEB9");
             }
             for (int x = 0; x < columnCount; x++) {
-                double yCoordTop = (-1) * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
+                double yCoordTop = (-1) * 2 * r + ((x + 1) % 2) * r + yStartOffset + yBoarderOffset;
                 double xCoordTop = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                double yCoordBot = tilesPerColumn * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
+                double yCoordBot = tilesPerColumn * 2 * r + ((x + 1) % 2) * r + yStartOffset + yBoarderOffset;
                 double xCoordBot = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
                 topDown[x * 2] = new HorizontalBoarder(xCoordTop, yCoordTop, n, r, 't', extraWidth);
                 topDown[x * 2 + 1] = new HorizontalBoarder(xCoordBot, yCoordBot, n, r, 'd', extraWidth);
@@ -338,7 +338,7 @@ public class App extends Application {
             }
             for (int y = 0; y < tilesPerColumn; y++) {
                 for (int x = 0; x < columnCount; x++) {
-                    double yCoord = y * 2 * r + ((x+1) % 2) * r + yStartOffset + yBoarderOffset;
+                    double yCoord = y * 2 * r + ((x + 1) % 2) * r + yStartOffset + yBoarderOffset;
                     double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
                     grid[y * columnCount + x] = new HexagonTile(xCoord, yCoord, r, 'o', extraWidth);
@@ -346,6 +346,7 @@ public class App extends Application {
                     setStyle("-fx-background-color: #FA15A1");
                 }
             }
+
             // Why the hell won't the text show.
             // Grid contents
             // TODO: Make text part of the polygon shape. (to fix click through)
@@ -382,6 +383,8 @@ public class App extends Application {
                 textGrid[i].setStyle("-rtfx-background-color:#FA15A1;-rtfx-border-stroke-color:black");
                 getChildren().add(textGrid[i]);
                 // textGrid[i].toFront(); // no need due to insertion order
+                Board board = new Board(columnCount, tilesPerColumn, scale, true, 10, 0, 0);
+                getChildren().add(board);
             }
         }
     }
