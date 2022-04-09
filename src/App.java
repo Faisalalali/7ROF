@@ -284,9 +284,9 @@ public class App extends Application {
         private int columnCount, // how many columns of tiles should be created
                 tilesPerColumn; // the amount of tiles that are contained in each column
 
-        double xStartOffset = 50; // offsets the entire field to the right
+        double xStartOffset = 0; // offsets the entire field to the right
         double xBoarderOffset = 0;
-        double yStartOffset = 50; // offsets the entire fields downwards
+        double yStartOffset = 0; // offsets the entire fields downwards
         double yBoarderOffset = 0;
 
         HorizontalBoarder[] side;
@@ -306,86 +306,102 @@ public class App extends Application {
             this.xBoarderOffset = n;
             this.yBoarderOffset = r;
             // Horizontal alignment grid
-            grid = new HexagonTile[columnCount * tilesPerColumn];
-            textGrid = new Text[columnCount * tilesPerColumn];
-            side = new HorizontalBoarder[(columnCount + 1) * 2];
-            topDown = new HorizontalBoarder[tilesPerColumn * 2];
+            // grid = new HexagonTile[columnCount * tilesPerColumn];
+            // textGrid = new Text[columnCount * tilesPerColumn];
+            // side = new HorizontalBoarder[(columnCount + 1) * 2];
+            // topDown = new HorizontalBoarder[tilesPerColumn * 2];
 
-            for (int y = 0; y < tilesPerColumn + 1; y++) {
-                double yCoordLeft = y * 2 * r + ((0) % 2) * r + yStartOffset + yBoarderOffset;
-                double xCoordLeft = (-1) * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+            // for (int y = 0; y < tilesPerColumn + 1; y++) {
+            // double yCoordLeft = y * 2 * r + ((0) % 2) * r + yStartOffset +
+            // yBoarderOffset;
+            // double xCoordLeft = (-1) * 2 * n * 0.75 * extraWidth + xStartOffset +
+            // xBoarderOffset;
 
-                double yCoordRight = y * 2 * r + ((columnCount % 2) - 1) * r + yStartOffset + yBoarderOffset;
-                double xCoordRight = (columnCount) * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+            // double yCoordRight = y * 2 * r + ((columnCount % 2) - 1) * r + yStartOffset +
+            // yBoarderOffset;
+            // double xCoordRight = (columnCount) * 2 * n * 0.75 * extraWidth + xStartOffset
+            // + xBoarderOffset;
 
-                side[y * 2] = new HorizontalBoarder(xCoordLeft, yCoordLeft, n, r, 'l', extraWidth);
-                side[y * 2 + 1] = new HorizontalBoarder(xCoordRight, yCoordRight, n, r, 'r', 1);
-                getChildren().add(side[y * 2]);
-                getChildren().add(side[y * 2 + 1]);
+            // side[y * 2] = new HorizontalBoarder(xCoordLeft, yCoordLeft, n, r, 'l',
+            // extraWidth);
+            // side[y * 2 + 1] = new HorizontalBoarder(xCoordRight, yCoordRight, n, r, 'r',
+            // 1);
+            // getChildren().add(side[y * 2]);
+            // getChildren().add(side[y * 2 + 1]);
 
-                // setStyle("-fx-background-color: #21AEB9");
-            }
-            for (int x = 0; x < columnCount; x++) {
-                double yCoordTop = (-1) * 2 * r + ((x + 1) % 2) * r + yStartOffset + yBoarderOffset;
-                double xCoordTop = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+            // // // setStyle("-fx-background-color: #21AEB9");
+            // }
+            // for (int x = 0; x < columnCount; x++) {
+            // double yCoordTop = (-1) * 2 * r + ((x + 1) % 2) * r + yStartOffset +
+            // yBoarderOffset;
+            // double xCoordTop = x * 2 * n * 0.75 * extraWidth + xStartOffset +
+            // xBoarderOffset;
 
-                double yCoordBot = tilesPerColumn * 2 * r + ((x + 1) % 2) * r + yStartOffset + yBoarderOffset;
-                double xCoordBot = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
-                topDown[x * 2] = new HorizontalBoarder(xCoordTop, yCoordTop, n, r, 't', extraWidth);
-                topDown[x * 2 + 1] = new HorizontalBoarder(xCoordBot, yCoordBot, n, r, 'd', extraWidth);
-                getChildren().add(topDown[x * 2]);
-                getChildren().add(topDown[x * 2 + 1]);
-            }
-            for (int y = 0; y < tilesPerColumn; y++) {
-                for (int x = 0; x < columnCount; x++) {
-                    double yCoord = y * 2 * r + ((x + 1) % 2) * r + yStartOffset + yBoarderOffset;
-                    double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
+            // double yCoordBot = tilesPerColumn * 2 * r + ((x + 1) % 2) * r + yStartOffset
+            // + yBoarderOffset;
+            // double xCoordBot = x * 2 * n * 0.75 * extraWidth + xStartOffset +
+            // xBoarderOffset;
+            // topDown[x * 2] = new HorizontalBoarder(xCoordTop, yCoordTop, n, r, 't',
+            // extraWidth);
+            // topDown[x * 2 + 1] = new HorizontalBoarder(xCoordBot, yCoordBot, n, r, 'd',
+            // extraWidth);
+            // getChildren().add(topDown[x * 2]);
+            // getChildren().add(topDown[x * 2 + 1]);
+            // }
+            // for (int y = 0; y < tilesPerColumn; y++) {
+            //     for (int x = 0; x < columnCount; x++) {
+            //         double yCoord = y * 2 * r + ((x + 1) % 2) * r + yStartOffset + yBoarderOffset;
+            //         double xCoord = x * 2 * n * 0.75 * extraWidth + xStartOffset + xBoarderOffset;
 
-                    grid[y * columnCount + x] = new HexagonTile(xCoord, yCoord, r, 'o', extraWidth);
-                    getChildren().add(grid[y * columnCount + x]);
-                    setStyle("-fx-background-color: #FA15A1");
-                }
-            }
+            //         grid[y * columnCount + x] = new HexagonTile(xCoord, yCoord, r, 'o', extraWidth);
+            //         getChildren().add(grid[y * columnCount + x]);
+            //         setStyle("-fx-background-color: #FA15A1");
+            //     }
+            // }
 
             // Why the hell won't the text show.
             // Grid contents
-            // TODO: Make text part of the polygon shape. (to fix click through)
-            java.util.Random random = new java.util.Random();
-            List<String> list = new ArrayList<>(Arrays.asList("أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز",
-                    "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "هـ", "و", "ي",
-                    "1", "2", "3", "4", "5", "6", "7", "8", "9"));
-            Collections.shuffle(list, random);
-            for (int i = 0; i < grid.length; i++) {
-                double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
-                textGrid[i] = new Text(list.get(i));
-                Font font = Font.loadFont("file:resources/Fonts/Reem_Kufi/static/ReemKufi-Bold.ttf", 52);
-                textGrid[i].setFont(font);
-                textGrid[i].setTextAlignment(TextAlignment.CENTER);
-                textGrid[i].setFill(Color.BLUE);
-                Lighting ds = new Lighting();
+            // // TODO: Make text part of the polygon shape. (to fix click through)
+            // java.util.Random random = new java.util.Random();
+            // List<String> list = new ArrayList<>(Arrays.asList("أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز",
+            //         "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "هـ", "و", "ي", "1", "2", "3",
+            //         "4", "5", "6", "7", "8", "9"));
+            // Collections.shuffle(list, random);
+            // for (int i = 0; i < grid.length; i++) {
+                // double x = grid[i].getCenter()[0], y = grid[i].getCenter()[1];
+                // textGrid[i] = new Text(list.get(i));
+                // Font font =
+                // Font.loadFont("file:resources/Fonts/Reem_Kufi/static/ReemKufi-Bold.ttf", 52);
+                // textGrid[i].setFont(font);
+                // textGrid[i].setTextAlignment(TextAlignment.CENTER);
+                // textGrid[i].setFill(Color.BLUE);
+                // Lighting ds = new Lighting();
 
-                Light.Distant light = new Light.Distant();
-                light.setAzimuth(0);
+                // Light.Distant light = new Light.Distant();
+                // light.setAzimuth(0);
 
-                Lighting lighting = new Lighting(light);
-                lighting.setSurfaceScale(5.0);
-                SimpleDoubleProperty azimuth = new SimpleDoubleProperty(0);
+                // Lighting lighting = new Lighting(light);
+                // lighting.setSurfaceScale(5.0);
+                // SimpleDoubleProperty azimuth = new SimpleDoubleProperty(0);
 
-                light.setAzimuth(azimuth.get());
-                lighting.setLight(light);
-                textGrid[i].setEffect(lighting);
+                // light.setAzimuth(azimuth.get());
+                // lighting.setLight(light);
+                // textGrid[i].setEffect(lighting);
 
-                textGrid[i].setEffect(ds);
-                // textGrid[i]
-                textGrid[i].xProperty().set(x - textGrid[i].getBoundsInLocal().getWidth() * .5);
+                // textGrid[i].setEffect(ds);
+                // // textGrid[i]
+                // textGrid[i].xProperty().set(x - textGrid[i].getBoundsInLocal().getWidth() *
+                // .5);
 
-                textGrid[i].yProperty().set(y + textGrid[i].getBoundsInLocal().getHeight() * .25);
-                textGrid[i].setStyle("-rtfx-background-color:#FA15A1;-rtfx-border-stroke-color:black");
-                getChildren().add(textGrid[i]);
+                // textGrid[i].yProperty().set(y + textGrid[i].getBoundsInLocal().getHeight() *
+                // .25);
+                // //
+                // textGrid[i].setStyle("-rtfx-background-color:#FA15A1;-rtfx-border-stroke-color:black");
+                // getChildren().add(textGrid[i]);
                 // textGrid[i].toFront(); // no need due to insertion order
-                Board board = new Board(columnCount, tilesPerColumn, scale, true, 10, 0, 0);
-                getChildren().add(board);
-            }
+            // }
+            Board board = new Board(columnCount, tilesPerColumn, scale, true, 10, 0, 0);
+            getChildren().add(board);
         }
     }
 }
