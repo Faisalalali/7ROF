@@ -209,7 +209,8 @@ public class HexagonTile extends Polygon {
                 if (state == 0) {
                     state = 1;
                     setBlendMode(BlendMode.MULTIPLY);
-                    setFill(Color.rgb(170, 170, 255));
+                    setFill(Color.YELLOW);
+                    setStroke(Color.BLACK);
                     timeline = new Timeline(
                             new KeyFrame(Duration.seconds(0.1), evt -> setBlendMode(BlendMode.MULTIPLY)),
                             new KeyFrame(Duration.seconds(0.4), evt -> setBlendMode(BlendMode.SOFT_LIGHT)));
@@ -229,7 +230,8 @@ public class HexagonTile extends Polygon {
                 if (state == 0) {
                     state = 1;
                     setBlendMode(BlendMode.MULTIPLY);
-                    setFill(Color.rgb(170, 170, 255));
+                    setFill(Color.YELLOW);
+                    setStroke(Color.BLACK);
                     timeline = new Timeline(
                             new KeyFrame(Duration.seconds(0.1), evt -> setBlendMode(BlendMode.MULTIPLY)),
                             new KeyFrame(Duration.seconds(0.4), evt -> setBlendMode(BlendMode.SOFT_LIGHT)));
