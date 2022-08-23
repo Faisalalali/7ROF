@@ -1,29 +1,14 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.crypto.dsig.SignatureProperty;
-
 import javafx.application.Application;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Point2D;
+
+import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Slider;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Lighting;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
+import javafx.scene.input.MouseButton;
 
 public class App extends Application {
 
@@ -44,11 +29,6 @@ public class App extends Application {
         Scene content = new Scene(tileMap, WINDOW_WIDTH, WINDOW_HEIGHT);
         content.setFill(Color.TRANSPARENT);
         primaryStage.setScene(content);
-        // primaryStage.initStyle(StageStyle.UNDECORATED);
-        // primaryStage.initStyle(StageStyle.TRANSPARENT);
-        // primaryStage.setOpacity(1);
-        // primaryStage.initStyle(StageStyle.TRANSPARENT);
-        // primaryStage.setAlwaysOnTop(true);
 
         // Horizontal alignment grid
         HorizontalHexagonGrid board = new HorizontalHexagonGrid(50, 5, 5);
@@ -57,7 +37,7 @@ public class App extends Application {
 
     }
 
-    // TODO: put the classes in difrent files, maybe?
+    // TODO: put the classes in different files, maybe?
 
     // https://www.desmos.com/calculator/rn1ilpugiv
     private class VerticalTile extends Polygon {
