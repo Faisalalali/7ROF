@@ -204,7 +204,7 @@ public class HexagonTile extends Polygon {
     public void resetColor() {
         state = 0;
         setFill(Color.TRANSPARENT);
-    } 
+    }
 
     public void setOverlay() {
         setFill(Color.TRANSPARENT);
