@@ -9,7 +9,7 @@ import javafx.util.Duration;
 
 public class HexagonTile extends Polygon {
     // Horizontal orintation Hesagon equations by me
-    // https://www.desmos.com/calculator/f5ht6dvrcp
+    // https://www.desmos.com/calculator/0tpb0oirpq
 
     private double x, y;
     private double circumRadius,
@@ -200,6 +200,11 @@ public class HexagonTile extends Polygon {
      * 3: red
      */
     Timeline timeline;
+
+    public void resetColor() {
+        state = 0;
+        setFill(Color.TRANSPARENT);
+    } 
 
     public void setOverlay() {
         setFill(Color.TRANSPARENT);
