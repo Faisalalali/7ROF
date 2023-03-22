@@ -1,0 +1,21 @@
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+div {
+    width: 20%;
+    height: 100vh;
+    border: black 1px solid;
+    text-align: center;
+    line-height: 100vh;
+}
+.green {
+    background-color: green;
+}
+.red {
+    background-color: red;
+}
+.spacer {
+    background-color: white;
+}
