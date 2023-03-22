@@ -22,10 +22,14 @@ A list of the observed functionalities are in the following table:
 | Sound System | :white_check_mark: | :outbox_tray: |
 | Timer System | :white_check_mark: | :outbox_tray: |
 | Overlaying/Video editing| :white_check_mark: | :outbox_tray: |
+| Animations | :white_check_mark: | :card_file_box: |
 
 *CSS styles in javafx are limited. 
 **Exact font could be identified, a different (but hopefully visually similar) font was chosen.
-:outbox_tray: : Handled by other software
+
+:outbox_tray: : Handled by glue scripts.
+
+:card_file_box: : Not yet implemented. (TODO)
 
 ### Additional Details
 The sound system is managed by an AHK script combined with 4 OSU macro keyboards to reflect the button press action on the screen.
