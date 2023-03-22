@@ -208,6 +208,10 @@ public class HexagonTile extends Polygon {
     public void resetColor() {
         state = 0;
         setFill(Color.TRANSPARENT);
+        // reset timeline
+        if (timeline != null) {
+            timeline.stop();
+        }
     }
 
     public void setOverlay() {

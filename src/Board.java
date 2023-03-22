@@ -27,6 +27,12 @@ public class Board extends AnchorPane {
     private Text[][] textTiles;
     private boolean boardered = true;
 
+    private double extendQ = 0, extendS = 0, extendR = 0;
+    private double circumRadius = 0;
+    private int width = 0, height = 0;
+    private double inRadius = 0;
+    private double v = 0;
+
     Random random = new Random();
     List<String> list = new ArrayList<>(Arrays.asList("أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز",
             "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "هـ", "و", "ي",
@@ -34,10 +40,18 @@ public class Board extends AnchorPane {
 
     Board(int width, int height, double circumRadius, boolean offset, double extendQ, double extendS,
             double extendR) {
+        this.extendQ = extendQ;
+        this.extendS = extendS;
+        this.extendR = extendR;
+        this.circumRadius = circumRadius;
+        this.width = width;
+        this.height = height;
+
         this.offset = offset;
         this.columnCount = width;
         this.rowCount = height;
         double inRadius = Math.sqrt(circumRadius * circumRadius * .75);
+        this.inRadius = inRadius;
         tiles = new HexagonTile[height + (boardered ? 2 : 0)][width + (boardered ? 2 : 0)];
         textTiles = new Text[height + (boardered ? 2 : 0)][width + (boardered ? 2 : 0)];
 
@@ -62,6 +76,7 @@ public class Board extends AnchorPane {
 
         // Top and bottom boarders
         double v = (width / 2.) * (2 * (circumRadius * 0.75 + extendQ));
+        this.v = v;
         for (int x = 1; x < tiles[0].length - 1; x++) {
             double xCoordTop = (x - 1) * 2 * (circumRadius * 0.75 + extendQ)
                     + v;
@@ -127,8 +142,8 @@ public class Board extends AnchorPane {
 
                 // add text to tiles
                 Text text = new Text(
-                    // x + "," + y);
-                    list.get(0));
+                        // x + "," + y);
+                        list.get(0));
                 textTiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)] = text;
                 list.remove(0);
 
@@ -188,10 +203,18 @@ public class Board extends AnchorPane {
         Collections.shuffle(list, random);
         for (int y = 0; y < rowCount; y++) {
             for (int x = 0; x < columnCount; x++) {
-                textTiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)].setText(
-                        x + "," + y
-                // list.get(0)
-                );
+                double CenterX = x * 2 * (circumRadius * 0.75 + extendQ) + v;
+                double CenterY = y * 2 * inRadius + ((x + (offset ? 1 : 0)) % 2) * inRadius
+                        + (height / 2.) * (2 * inRadius);
+                Text text = textTiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)];
+                text.setText(
+                        // x + "," + y
+                        list.get(0));
+                // set text position in the middle of the hexagon
+                double fixedX = CenterX - text.getLayoutBounds().getWidth() / 2;
+                double fixedY = CenterY + text.getLayoutBounds().getHeight() / 4;
+                text.setX(fixedX);
+                text.setY(fixedY);
                 list.remove(0);
             }
         }
