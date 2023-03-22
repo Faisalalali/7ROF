@@ -269,8 +269,8 @@ public class HexagonTile extends Polygon {
             setFill(CostumeColor.DARK_GREEN);
             timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0.1), evt -> setFill(CostumeColor.DARK_GREEN)),
-                    new KeyFrame(Duration.seconds(0.4), evt -> setFill(CostumeColor.LIGHT_GREEN)));
-            timeline.setCycleCount((int) (duration));
+                    new KeyFrame(Duration.seconds(0.2), evt -> setFill(CostumeColor.LIGHT_GREEN)));
+            timeline.setCycleCount((int) (duration) * 5);
             timeline.play();
         }
     }
@@ -280,8 +280,8 @@ public class HexagonTile extends Polygon {
             setFill(CostumeColor.DARK_RED);
             timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0.1), evt -> setFill(CostumeColor.DARK_RED)),
-                    new KeyFrame(Duration.seconds(0.4), evt -> setFill(CostumeColor.LIGHT_RED)));
-            timeline.setCycleCount((int) (duration));
+                    new KeyFrame(Duration.seconds(0.2), evt -> setFill(CostumeColor.LIGHT_RED)));
+            timeline.setCycleCount((int) (duration) * 5);
             timeline.play();
         }
     }
