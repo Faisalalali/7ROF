@@ -43,7 +43,7 @@ public class App extends Application {
         Game(double scale, int columnCount, int tilesPerColumn) {
             // create the board
             this.board = new Board(columnCount, tilesPerColumn, scale, true, 10, 0, 0);
-            board.shuffle();
+            // board.shuffle();
             getChildren().add(board);
             ResetButton resetButton = new ResetButton(10, 10, 100, 50, this.board);
             getChildren().add(resetButton);
@@ -72,7 +72,7 @@ public class App extends Application {
             setLayoutY(y);
             setPrefSize(width, height);
             setOnAction(e -> {
-                board.deselect();
+                board.deselectAll();
             });
         }
     }
