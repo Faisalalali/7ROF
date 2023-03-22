@@ -8,6 +8,10 @@ import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 
 public class HexagonTile extends Polygon {
+    final int UNSELECTED = 0;
+    final int SELECTED = 1;
+    final int GREEN = 2;
+    final int RED = 3;
     // Horizontal orintation Hesagon equations by me
     // https://www.desmos.com/calculator/0tpb0oirpq
 
@@ -63,8 +67,8 @@ public class HexagonTile extends Polygon {
                         w2, h3,
                         w1, h2);
                 setFill(Color.ANTIQUEWHITE);
-                setStyle(
-                        "-fx-stroke-type: inside; -fx-stroke-width: 10px; -fx-stroke: black; -fx-border-style: solid solid none solid none solid;");
+                // setStyle(
+                //         "-fx-stroke-type: inside; -fx-stroke-width: 10px; -fx-stroke: black; -fx-border-style: solid solid none solid none solid;");
                 break;
             case 'l':
                 getPoints().addAll(
@@ -74,7 +78,7 @@ public class HexagonTile extends Polygon {
                         w5, h3,
                         (w2 + w4) / 2, h3,
                         (w3 + w5) / 2, h2);
-                setFill(Color.RED);
+                setFill(CostumeColor.LIGHT_RED);
                 break;
             case 'r':
                 getPoints().addAll(
@@ -84,7 +88,7 @@ public class HexagonTile extends Polygon {
                         (w5 + w3) / 2, h3,
                         w2, h3,
                         w1, h2);
-                setFill(Color.RED);
+                setFill(CostumeColor.LIGHT_RED);
                 break;
             case 'w':
                 getPoints().addAll(
@@ -94,7 +98,7 @@ public class HexagonTile extends Polygon {
                         w5, h3,
                         w2, h3,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
             case 'x':
                 getPoints().addAll(
@@ -104,7 +108,7 @@ public class HexagonTile extends Polygon {
                         w5, h3,
                         w2, h3,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
             case 'y':
                 getPoints().addAll(
@@ -114,7 +118,7 @@ public class HexagonTile extends Polygon {
                         w5, h1,
                         w2, h1,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
             case 'z':
                 getPoints().addAll(
@@ -124,7 +128,7 @@ public class HexagonTile extends Polygon {
                         w5, h1,
                         w2, h1,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
             case 'c':
                 getPoints().addAll(
@@ -134,7 +138,7 @@ public class HexagonTile extends Polygon {
                         w5, h3,
                         w2, h3,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
             case 'f':
                 getPoints().addAll(
@@ -144,7 +148,7 @@ public class HexagonTile extends Polygon {
                         w5, h1,
                         w2, h1,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
             case 'm':
                 getPoints().addAll(
@@ -156,7 +160,7 @@ public class HexagonTile extends Polygon {
                         w5, h3,
                         w2, h3,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
             case 'n':
                 getPoints().addAll(
@@ -168,7 +172,7 @@ public class HexagonTile extends Polygon {
                         w5, h1,
                         w2, h1,
                         w1, h2);
-                setFill(Color.GREEN);
+                setFill(CostumeColor.LIGHT_GREEN);
                 break;
 
             // cfmn are left
@@ -211,8 +215,8 @@ public class HexagonTile extends Polygon {
         setStroke(Color.TRANSPARENT);
         setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-                if (state == 0) {
-                    state = 1;
+                if (state == UNSELECTED) {
+                    state = SELECTED;
                     setBlendMode(BlendMode.MULTIPLY);
                     setFill(Color.YELLOW);
                     setStroke(Color.BLACK);
@@ -222,37 +226,71 @@ public class HexagonTile extends Polygon {
                     timeline.setCycleCount(Animation.INDEFINITE);
                     timeline.play();
                     // setBlendMode(BlendMode.MULTIPLY);
-                } else if (state == 1) {
+                } else if (state == SELECTED) {
                     setBlendMode(null);
                     timeline.stop();
-                    state = 2;
-                    setFill(Color.GREEN);
-                } else if (state == 3 || state == 2) {
-                    state = 0;
+                    state = GREEN;
+                    setFill(CostumeColor.LIGHT_GREEN);
+                } else if (state == RED || state == GREEN) {
+                    state = UNSELECTED;
                     setFill(Color.TRANSPARENT);
                 }
             } else if (event.getButton() == MouseButton.SECONDARY) {
-                if (state == 0) {
-                    state = 1;
+                if (state == UNSELECTED) {
+                    state = SELECTED;
                     setBlendMode(BlendMode.MULTIPLY);
                     setFill(Color.YELLOW);
                     setStroke(Color.BLACK);
                     timeline = new Timeline(
-                            new KeyFrame(Duration.seconds(0.1), evt -> setBlendMode(BlendMode.MULTIPLY)),
+                            new KeyFrame(Duration.seconds(0.2), evt -> setBlendMode(BlendMode.MULTIPLY)),
                             new KeyFrame(Duration.seconds(0.4), evt -> setBlendMode(BlendMode.SOFT_LIGHT)));
                     timeline.setCycleCount(Animation.INDEFINITE);
                     timeline.play();
                     // setBlendMode(BlendMode.MULTIPLY);
-                } else if (state == 1) {
+                } else if (state == SELECTED) {
                     setBlendMode(null);
                     timeline.stop();
-                    state = 3;
-                    setFill(Color.RED);
-                } else if (state == 3 || state == 2) {
-                    state = 0;
+                    state = RED;
+                    setFill(CostumeColor.LIGHT_RED);
+                } else if (state == RED || state == GREEN) {
+                    state = UNSELECTED;
                     setFill(Color.TRANSPARENT);
                 }
             }
         });
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public void blinkGreen(double duration) {
+        if (state == GREEN) {
+            setFill(CostumeColor.DARK_GREEN);
+            timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(0.1), evt -> setFill(CostumeColor.DARK_GREEN)),
+                    new KeyFrame(Duration.seconds(0.4), evt -> setFill(CostumeColor.LIGHT_GREEN)));
+            timeline.setCycleCount((int) (duration));
+            timeline.play();
+        }
+    }
+
+    public void blinkRed(double duration) {
+        if (state == RED) {
+            setFill(CostumeColor.DARK_RED);
+            timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(0.1), evt -> setFill(CostumeColor.DARK_RED)),
+                    new KeyFrame(Duration.seconds(0.4), evt -> setFill(CostumeColor.LIGHT_RED)));
+            timeline.setCycleCount((int) (duration));
+            timeline.play();
+        }
+    }
+}
+
+class CostumeColor {
+    public final static Color LIGHT_RED = Color.rgb(245, 24, 24);
+    public final static Color LIGHT_GREEN = Color.rgb(17, 200, 17);
+    public final static Color DARK_RED = Color.rgb(174, 23, 18);
+    public final static Color DARK_GREEN = Color.rgb(0, 128, 0);
+
 }

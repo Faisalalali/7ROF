@@ -127,8 +127,8 @@ public class Board extends AnchorPane {
 
                 // add text to tiles
                 Text text = new Text(
-                        // "[test]");
-                        list.get(0));
+                    // x + "," + y);
+                    list.get(0));
                 textTiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)] = text;
                 list.remove(0);
 
@@ -210,6 +210,38 @@ public class Board extends AnchorPane {
             for (int x = 0; x < columnCount; x++) {
                 tiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)].resetColor();
             }
+        }
+    }
+
+    public Text getTileText(int x, int y) {
+        return textTiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)];
+    }
+
+    public void blinkGreen(double duration) {
+        for (int y = 0; y < rowCount; y++) {
+            for (int x = 0; x < columnCount; x++) {
+                tiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)].blinkGreen(duration);
+            }
+        }
+        for (int x = 1; x < tiles[0].length - 1; x++) {
+            int lastRow = tiles.length - 1;
+            tiles[0][x].blinkGreen(duration);
+            tiles[lastRow][x].blinkGreen(duration);
+
+        }
+
+    }
+
+    public void blinkRed(double duration) {
+        for (int y = 0; y < rowCount; y++) {
+            for (int x = 0; x < columnCount; x++) {
+                tiles[y + (boardered ? 1 : 0)][x + (boardered ? 1 : 0)].blinkRed(duration);
+            }
+        }
+        for (int y = 1; y < tiles.length; y++) {
+            int lastCol = tiles[0].length - 1;
+            tiles[y][lastCol].blinkRed(duration);
+            tiles[y][0].blinkRed(duration);
         }
     }
 }
