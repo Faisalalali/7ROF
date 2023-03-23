@@ -7,10 +7,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 
-import com.github.kwhat.jnativehook.GlobalScreen;
-import com.github.kwhat.jnativehook.NativeHookException;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+// import com.github.kwhat.jnativehook.GlobalScreen;
+// import com.github.kwhat.jnativehook.NativeHookException;
+// import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+// import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 
 public class App extends Application {
 
