@@ -47,6 +47,7 @@ public class HexagonTile extends Polygon {
         this.circumRadius = circumRadius;
         this.inRadius = Math.sqrt(circumRadius * circumRadius * .75);
         this.boarderDeform = shape;
+        this.state = UNSELECTED;
         double h1 = y - inRadius - inRadius * extendS + inRadius * extendR,
                 h2 = y, // Generally y ± inRadius * extendS ∓ inRadius * extendR, but no need rn.
                 h3 = y + inRadius + inRadius * extendS + inRadius * extendR,
@@ -68,7 +69,8 @@ public class HexagonTile extends Polygon {
                         w1, h2);
                 setFill(Color.ANTIQUEWHITE);
                 // setStyle(
-                //         "-fx-stroke-type: inside; -fx-stroke-width: 10px; -fx-stroke: black; -fx-border-style: solid solid none solid none solid;");
+                // "-fx-stroke-type: inside; -fx-stroke-width: 10px; -fx-stroke: black;
+                // -fx-border-style: solid solid none solid none solid;");
                 break;
             case 'l':
                 getPoints().addAll(
@@ -79,6 +81,7 @@ public class HexagonTile extends Polygon {
                         (w2 + w4) / 2, h3,
                         (w3 + w5) / 2, h2);
                 setFill(CostumeColor.LIGHT_RED);
+                this.state = RED;
                 break;
             case 'r':
                 getPoints().addAll(
@@ -89,6 +92,7 @@ public class HexagonTile extends Polygon {
                         w2, h3,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_RED);
+                this.state = RED;
                 break;
             case 'w':
                 getPoints().addAll(
@@ -99,6 +103,7 @@ public class HexagonTile extends Polygon {
                         w2, h3,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
             case 'x':
                 getPoints().addAll(
@@ -109,6 +114,7 @@ public class HexagonTile extends Polygon {
                         w2, h3,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
             case 'y':
                 getPoints().addAll(
@@ -119,6 +125,7 @@ public class HexagonTile extends Polygon {
                         w2, h1,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
             case 'z':
                 getPoints().addAll(
@@ -129,6 +136,7 @@ public class HexagonTile extends Polygon {
                         w2, h1,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
             case 'c':
                 getPoints().addAll(
@@ -139,6 +147,7 @@ public class HexagonTile extends Polygon {
                         w2, h3,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
             case 'f':
                 getPoints().addAll(
@@ -149,6 +158,7 @@ public class HexagonTile extends Polygon {
                         w2, h1,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
             case 'm':
                 getPoints().addAll(
@@ -161,6 +171,7 @@ public class HexagonTile extends Polygon {
                         w2, h3,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
             case 'n':
                 getPoints().addAll(
@@ -173,6 +184,7 @@ public class HexagonTile extends Polygon {
                         w2, h1,
                         w1, h2);
                 setFill(CostumeColor.LIGHT_GREEN);
+                this.state = GREEN;
                 break;
 
             // cfmn are left
@@ -214,51 +226,66 @@ public class HexagonTile extends Polygon {
         }
     }
 
+    public void setSelected(boolean selected) {
+        if (selected) {
+            state = SELECTED;
+            setBlendMode(BlendMode.MULTIPLY);
+            setFill(Color.YELLOW);
+            setStroke(Color.BLACK);
+            timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(0.1), evt -> setBlendMode(BlendMode.MULTIPLY)),
+                    new KeyFrame(Duration.seconds(0.4), evt -> setBlendMode(BlendMode.SOFT_LIGHT)));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        } else {
+            state = UNSELECTED;
+            setFill(Color.TRANSPARENT);
+            setBlendMode(null);
+            timeline.stop();
+        }
+    }
+
+    public void setGreen() {
+        setBlendMode(null);
+        timeline.stop();
+        state = GREEN;
+        setFill(CostumeColor.LIGHT_GREEN);
+    }
+
+    public void setRed() {
+        setBlendMode(null);
+        timeline.stop();
+        state = RED;
+        setFill(CostumeColor.LIGHT_RED);
+    }
+
     public void setOverlay() {
         setFill(Color.TRANSPARENT);
         setStroke(Color.TRANSPARENT);
         setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 if (state == UNSELECTED) {
-                    state = SELECTED;
-                    setBlendMode(BlendMode.MULTIPLY);
-                    setFill(Color.YELLOW);
-                    setStroke(Color.BLACK);
-                    timeline = new Timeline(
-                            new KeyFrame(Duration.seconds(0.1), evt -> setBlendMode(BlendMode.MULTIPLY)),
-                            new KeyFrame(Duration.seconds(0.4), evt -> setBlendMode(BlendMode.SOFT_LIGHT)));
-                    timeline.setCycleCount(Animation.INDEFINITE);
-                    timeline.play();
-                    // setBlendMode(BlendMode.MULTIPLY);
+                    setSelected(true);
                 } else if (state == SELECTED) {
-                    setBlendMode(null);
-                    timeline.stop();
-                    state = GREEN;
-                    setFill(CostumeColor.LIGHT_GREEN);
+                    setGreen();
                 } else if (state == RED || state == GREEN) {
-                    state = UNSELECTED;
-                    setFill(Color.TRANSPARENT);
+                    setSelected(false);
                 }
             } else if (event.getButton() == MouseButton.SECONDARY) {
                 if (state == UNSELECTED) {
-                    state = SELECTED;
-                    setBlendMode(BlendMode.MULTIPLY);
-                    setFill(Color.YELLOW);
-                    setStroke(Color.BLACK);
-                    timeline = new Timeline(
-                            new KeyFrame(Duration.seconds(0.2), evt -> setBlendMode(BlendMode.MULTIPLY)),
-                            new KeyFrame(Duration.seconds(0.4), evt -> setBlendMode(BlendMode.SOFT_LIGHT)));
-                    timeline.setCycleCount(Animation.INDEFINITE);
-                    timeline.play();
-                    // setBlendMode(BlendMode.MULTIPLY);
+                    setSelected(true);
                 } else if (state == SELECTED) {
-                    setBlendMode(null);
-                    timeline.stop();
-                    state = RED;
-                    setFill(CostumeColor.LIGHT_RED);
+                    setRed();
                 } else if (state == RED || state == GREEN) {
-                    state = UNSELECTED;
-                    setFill(Color.TRANSPARENT);
+                    setSelected(false);
+                }
+            } else if (event.getButton() == MouseButton.MIDDLE) {
+                if (state == UNSELECTED) {
+                    setSelected(true);
+                } else if (state == SELECTED) {
+                    setSelected(false);
+                } else if (state == RED || state == GREEN) {
+                    setSelected(false);
                 }
             }
         });
