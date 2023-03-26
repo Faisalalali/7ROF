@@ -46,7 +46,7 @@ UpdateKey(name, "Red2", "spacer")
 
 clicker := 0
 answered := 1
-m::
+>!m::
     If (answered = 0) {
         answered := 3
         SoundPlay, RZFWLXE-bell-hop-bell.mp3
