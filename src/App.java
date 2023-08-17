@@ -6,11 +6,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-// import com.github.kwhat.jnativehook.GlobalScreen;
-// import com.github.kwhat.jnativehook.NativeHookException;
-// import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-// import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-
 public class App extends Application {
 
     private final static int WINDOW_WIDTH = 800;
@@ -31,9 +26,6 @@ public class App extends Application {
         Game gameBoard = new Game(50, 5, 5);
         tileMap.getChildren().add(gameBoard);
         primaryStage.show();
-
-        // KeyboardListener listener = new KeyboardListener();
-        // listener.register();
 
     }
 
@@ -105,35 +97,3 @@ public class App extends Application {
         }
     }
 }
-
-// class KeyboardListener implements NativeKeyListener {
-//     public void nativeKeyPressed(NativeKeyEvent e) {
-//         // Handle key press event
-//         // System.out.println("Key pressed: " +
-//         // NativeKeyEvent.getKeyText(e.getKeyCode()));
-//         String deviceName = e.getSource().hashCode() + "";
-//         String keyText = NativeKeyEvent.getKeyText(e.getKeyCode());
-//         System.out.println("Input from " + deviceName + ": " + keyText);
-//     }
-
-//     public void nativeKeyReleased(NativeKeyEvent e) {
-//         // Handle key release event
-//         // System.out.println("Key released: " +
-//         // NativeKeyEvent.getKeyText(e.getKeyCode()));
-//     }
-
-//     public void nativeKeyTyped(NativeKeyEvent e) {
-//         // Handle key typed event
-//         // System.out.println("Key typed: " + e.getKeyChar());
-//     }
-
-//     public void register() {
-//         try {
-//             // Register keyboard listener
-//             GlobalScreen.registerNativeHook();
-//             GlobalScreen.addNativeKeyListener(new KeyboardListener());
-//         } catch (NativeHookException ex) {
-//             System.err.println("Failed to register native hook: " + ex.getMessage());
-//         }
-//     }
-// }

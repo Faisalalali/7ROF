@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.input.MouseButton;
 
 public class Board extends AnchorPane {
     private boolean offset;
@@ -139,7 +138,6 @@ public class Board extends AnchorPane {
                 tiles[y + (bordered ? 1 : 0)][x + (bordered ? 1 : 0)] = new HexagonTile(xCord,
                         yCord, circumRadius, 'o', extendQ);
                 getChildren().add(tiles[y + (bordered ? 1 : 0)][x + (bordered ? 1 : 0)]);
-                // setStyle("-fx-background-color: #FA15A1");
             }
         }
 
@@ -160,7 +158,6 @@ public class Board extends AnchorPane {
 
                 // apply font
                 Font font = Font.font(
-                        // "file:resources/Fonts/Noto/NotoKufiArabic-VariableFont_wght.ttf",
                         "file:resources/Fonts/El_Messiri/ElMessiri-VariableFont_wght.ttf",
                         FontWeight.BOLD,
                         50);
@@ -186,7 +183,6 @@ public class Board extends AnchorPane {
                 text.setY(fixedY);
 
                 getChildren().add(text);
-                // setStyle("-fx-background-color: #FA15A1");
             }
         }
 
